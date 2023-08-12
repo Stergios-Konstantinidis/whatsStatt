@@ -1,0 +1,51 @@
+import whatsappAnalytics
+
+import datetime
+import sys
+from PyQt5 import QtCore, QtGui, QtWidgets, uic
+from PyQt5.QtWidgets import QMainWindow, QApplication
+class Ui_List(object):
+    def setupUi(self, List):
+        self.credits = QtWidgets.QLabel(List)
+        self.credits.setGeometry(QtCore.QRect(10, 500, 490, 40))
+        self.credits.setObjectName("label")
+        self.credits.setText("Stergios Konstantinidis ©2023; skonsta1@unil.ch; V1.0.0")
+
+        self.button = QtWidgets.QPushButton(List)
+        #self.button.setStyleSheet(“background-color : yellow”)
+        self.button.setGeometry(QtCore.QRect(100, 10, 300, 30))
+        self.button.setText("Cliquer ici pour importer la discution")
+        self.button.clicked.connect(self.selectChat)
+
+        self.listeResultat = QtWidgets.QListWidget(List)
+        self.listeResultat.setGeometry(QtCore.QRect(100, 50, 300, 400))
+
+
+    def selectChat(self):
+       filename = QtWidgets.QFileDialog.getOpenFileName()
+       print(filename[0])
+       scores = whatsappAnalytics.GetCount(filename[0])
+       self.listeResultat.clear()
+       self.listeResultat.addItems(scores)
+
+
+def launch():
+  import sys
+  app = QtWidgets.QApplication(sys.argv)
+  List = QtWidgets.QDialog()
+  ui = Ui_List()
+  ui.setupUi(List)
+  ui.on_user_selection()
+  List.show()
+  app.exec_()
+  app.quit()
+
+if __name__ == "__main__":
+  import sys
+  app = QtWidgets.QApplication(sys.argv)
+  List = QtWidgets.QDialog()
+  ui = Ui_List()
+  ui.setupUi(List)
+  List.show()
+  app.exec_()
+  app.quit()
