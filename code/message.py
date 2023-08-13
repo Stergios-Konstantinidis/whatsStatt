@@ -7,7 +7,11 @@ class message:
     def getUser(self):
         return self.user
     
+    def getDate(self):
+        return self.date.strftime("%d.%m.%Y")
+    
     def __str__(self):
         return self.user
     def __repr__(self) -> str:
         return str(self)
+    
