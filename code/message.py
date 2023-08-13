@@ -4,8 +4,9 @@ class message:
         self.date = date
         self.user = user
         self.nombreChars = nombreCaractères
+
     def getUser(self):
-        return self.user
+        return str(self.user)
     
     def getDate(self):
         return self.date.strftime("%d.%m.%Y")
