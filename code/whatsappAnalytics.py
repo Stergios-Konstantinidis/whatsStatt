@@ -2,8 +2,10 @@ import re
 import datetime
 import numpy
 from message import message
+from PyQt5.QtCore import QDate
 
-def GetCount(file):
+
+def GetCount(file, _qDate:QDate = QDate(1900,1,1)):
     allMessagesExploitables = []
     file = open(file, 'r')
     for x in file:
@@ -12,8 +14,9 @@ def GetCount(file):
             date = datetime.datetime.strptime(reg[1],"%d.%m.%Y, %H:%M:%S")
             user = reg[2]
             chars = len(reg[3])
-            msg = message(date, user, chars)
-            allMessagesExploitables.append(msg)
+            if date.date() > _qDate.toPyDate():
+                msg = message(date, user, chars)
+                allMessagesExploitables.append(msg)
         except:
             pass
     userStats = {}
@@ -32,8 +35,7 @@ def GetCount(file):
 
 
 
-
-def getUserCount(files):
+def getDailyCount(files,_qDate:QDate = QDate(1900,1,1)):
     allMessagesExploitables = []
     file = open(files, 'r')
     for x in file:
@@ -42,47 +44,9 @@ def getUserCount(files):
             date = datetime.datetime.strptime(reg[1],"%d.%m.%Y, %H:%M:%S")
             user = reg[2]
             chars = len(reg[3])
-            msg = message(date, user, chars)
-            allMessagesExploitables.append(msg)
-        except:
-            pass
-
-
-    dates = tuple()
-
-    names = []
-    for envoi in allMessagesExploitables:
-        if not str(envoi.getUser()) in names:
-            names.append(envoi.getUser())
-
-
-    DailyStats = {}
-    for envoi in allMessagesExploitables:
-        if envoi.getDate() not in DailyStats:
-            dates = dates + tuple(envoi.getDate())
-            name = names
-            DailyStats[envoi.getDate()] = list(map(lambda x: 0, name))
-        DailyStats[envoi.getDate()][names.index(envoi.getUser())] = DailyStats[envoi.getDate()][names.index(envoi.getUser())] + 1
-
-    for stat in DailyStats:
-        DailyStats[stat] = numpy.array(DailyStats[stat])
-
-    return names, dates, DailyStats
-
-
-
-def getDailyCount(files, nbJours):
-    allMessagesExploitables = []
-    file = open(files, 'r')
-    for x in file:
-        try:
-            reg = re.match("\[(.*)\] ([^:]+):(.+)",x)
-            date = datetime.datetime.strptime(reg[1],"%d.%m.%Y, %H:%M:%S")
-            user = reg[2]
-            chars = len(reg[3])
-            if date > datetime.datetime.now() - datetime.timedelta(days=nbJours):
+            if date.date() > _qDate.toPyDate():
                 msg = message(date, user, chars)
-            allMessagesExploitables.append(msg)
+                allMessagesExploitables.append(msg)
         except:
             pass
 
