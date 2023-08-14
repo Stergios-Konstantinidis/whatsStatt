@@ -54,7 +54,7 @@ class Ui_List(object):
 
       #Credits area
         self.credits = QtWidgets.QLabel(List)
-        self.credits.setGeometry(QtCore.QRect(25, 520, 390, 40))
+        self.credits.setGeometry(QtCore.QRect(25, 520, 365, 40))
         self.credits.setObjectName("label")
         self.credits.setText("Stergios Konstantinidis ©2023; skonsta1@unil.ch; V1.0.0")
 
